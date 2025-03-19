@@ -96,8 +96,7 @@
             <div class="position-relative d-flex align-items-center justify-content-center">
                 <h5 class="display-3 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Resumen</h5>
                 <h1 class="position-absolute text-uppercase text-primary">Resumen</h1></div>
-               <p>Esta práctica evalúa la velocidad de procesamiento de distintos microcontroladores (ATtiny, ATmega y ESP32) midiendo el tiempo que tardan en recibir y ejecutar la instrucción de imprimir "Hola, mundo" en el monitor serial. Se tomarán 100 mediciones por cada MCU para obtener datos representativos. Los resultados se organizarán en tablas y gráficos para comparar su eficiencia y analizar las diferencias de rendimiento.</p>
-            </div>
+<p>El objetivo de esta práctica es comparar el tiempo de respuesta en la comunicación serie entre diferentes microcontroladores: el ATtiny86, el ESP32-C6 y el Arduino Uno. La metodología se centra en enviar un dato (letra "a") desde un computador hacia el microcontrolador mediante comunicación serie USB, y medir el tiempo que tarda en recibir una respuesta, que también será la letra "a". Para esto se utilizaron dos plataformas: Arduino IDE para programar los microcontroladores y Visual Studio con Python para el monitoreo de la comunicación y la medición de los tiempos de respuesta.</p>            </div>
             <div class="row align-items-center">
                 <div class="col-lg-6">
                 </div>
@@ -107,8 +106,13 @@
                                                 <h5 class="display-3 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Introducción</h5>
                                                 <h1 class="position-absolute text-uppercase text-primary">Introducción</h1>
                                             </div>
-                                            <p>Los microcontroladores son dispositivos clave en el desarrollo de sistemas embebidos y electrónica digital. Evaluar su rendimiento es esencial para determinar cuál es más eficiente en diferentes aplicaciones. En esta práctica, se medirá el tiempo que tarda cada MCU en procesar una instrucción simple, lo que permitirá comparar su velocidad de ejecución.</p>
-                                           
+                                            <p>La comunicación serie es uno de los métodos más utilizados para la transmisión de datos entre un microcontrolador y un computador, especialmente cuando se requiere simplicidad y eficacia en la transmisión. Este tipo de comunicación se realiza a través de puertos de tipo USB-serial, y la velocidad de transmisión de datos está determinada principalmente por la velocidad de baudios y la eficiencia de la implementación en el software y hardware.</p>
+                                           <p>En esta práctica se compararon tres microcontroladores de características diferentes:
+                                            <ul>
+                                            <li>Attiny: de pequeña escala, enfocado en aplicaciones de bajo consumo y con recursos limitados.
+                                                <li>Arduino Uno: Microcontrolador de uso común, basado en el chip ATmega328P, con soporte amplio y comunidad activa.
+                                             <li>ESP32-C6: Microcontrolador más avanzado con capacidades de conectividad Wi-Fi y Bluetooth.
+                                          </ul>  </p>
                                                     
                                                     
                                                     
@@ -165,10 +169,10 @@
                     <br><img src="img/microcontroladores/ESP32.png" width="130px" alt="esp32"></th>
 
             <tr>
-                <td><b>Tiempo de carga</b></td>
-                <td></td>
-                <td>12 seg</td>
-                <td></td>
+                <td><b>Tiempo promedio de carga</b></td>
+                <td>1.536 segundos</td>
+                <td>0.496 segundos</td>
+                <td>0.307 segundos</td>
             </tr>
 
         </table>
@@ -186,16 +190,48 @@
     <table>
      <p></p>
         <tr>
-            <td>ESP3232C6</td>
+            <td><b>Microcontroladores:</b></td>
         </tr>
         <tr>
-            <td>Arduino</td>
+            <td>ATtiny86</td>
         </tr>
         <tr>
-            <td>Attiny</td>
+            <td>Arduino Uno</td>
+        </tr>
+        <tr>
+            <td>ESP32-C6</td>
         </tr>
       
     </table>
+    <table>
+        <tr>
+            <td><b>Software:</b></td>
+        </tr>
+        <tr>
+            <td><b> Arduino IDE: </b>Para la programación de los microcontroladores.</td>
+        </tr>
+        <tr>
+            <td><b>Visual Studio:</b> Para escribir y ejecutar el script en Python</td>
+        </tr>
+        <tr>
+            <td><b>Python (con librería pySerial):</b> Para establecer la comunicación serie y medir el tiempo de respuesta.</td>
+        </tr>
+      
+    </table>
+    <table>
+        <p></p>
+           <tr>
+               <td><b>Conexiones:</b></td>
+           </tr>
+           <tr>
+               <td>Conexión USB entre la laptop y los microcontroladores.</td>
+           </tr>
+           <tr>
+               <td>Cables para la conexión de cada uno de los microcontroladores a la laptop.</td>
+           </tr>
+         
+         
+       </table>
         </div></div></div>
     <div class="container-fluid py-5" id="qualification">
         <div class="container">
@@ -222,7 +258,7 @@
                             <h1 class="position-absolute text-uppercase text-primary">Objetivo</h1>
                         </div>
                     </div>
-            <p>Determinar el tiempo que tarda cada MCU en recibir y ejecutar una instrucción simple, específicamente encender un LED, midiendo así su eficiencia en términos de procesamiento.</p>
+            <p>El objetivo de esta práctica es evaluar el rendimiento de diferentes microcontroladores en la comunicación serie, midiendo y comparando los tiempos de respuesta al enviar y recibir datos (la letra "a") mediante comunicación USB-serial. Esto permitirá identificar cuál microcontrolador es más eficiente en términos de latencia, considerando las características específicas de cada uno: el ESP32-C6, el Arduino Uno y el ATtiny86.</p>
             <div class="container-fluid py-5" id="qualification">
                 <div class="container">
                     <div class="position-relative d-flex align-items-center justify-content-center">
@@ -230,190 +266,95 @@
                         <h1 class="position-absolute text-uppercase text-primary">Procedimiento</h1>
                     </div>
                 </div>
-            <p>Se realizará la carga de un código en cada microcontrolador, el cual activará un LED. Se registrará el tiempo desde el inicio de la carga del código hasta la ejecución de la instrucción. Se tomarán 100 mediciones por cada MCU para obtener datos representativos.</p>
-          <br>  <center><h2>Visual studio code & Phyton</h2><center></center>
-             <p>El desarrollo de software para microcontroladores (MCU) se inicia configurando Visual Studio Code con Python. Luego, se escribe el código del programa, y finalmente, este código se transfiere al MCU, asegurando su correcta ejecución.</p>   </div></div>
-                            <div class="container">
-                <div class="position-relative d-flex align-items-center justify-content-center">
-                    <h1 class="position-absolute text-uppercase text-primary">Análisis y Representación de Datos</h1>
-                </div></div></div><br>
-                <br><br>
-            <p>Los resultados serán organizados en una tabla y representados gráficamente para visualizar y comparar la eficiencia de cada MCU en términos de velocidad de carga y ejecución. Se analizarán posibles variaciones y se discutirán las razones detrás de las diferencias observadas.</p>
+                <ol>
+                   
+            <p><li>Se programaron los tres microcontroladores con el mismo código básico que consiste en: 
+               <ul> 
+                 <li>Configurar el puerto serie a una<br> velocidad de 115200 baudios.
+                <li>Leer datos recibidos por el puerto serie.
+                <li>Responder al recibir la letra "a"<br> enviando de nuevo la misma letra.
+                </ul>
+                <li>En la computadora, se utilizó un script en Python (con la librería pySerial) para realizar las pruebas de comunicación: <br>
+               <ul>
+                <li>Enviar la letra "a" al microcontrolador.
+                <li>Medir el tiempo transcurrido desde que se envió la letra hasta que se recibe la respuesta.
+                <li>Repetir el proceso múltiples veces<br>(100 veces por cada microcontrolador).
+               </ul> 
+               <li>Los tiempos de respuesta fueron recopilados y promediados al final de cada serie de pruebas.
+                </p></ol>
+           
          <div class="container-fluid py-5" id="qualification">
             <div class="container">
                 <div class="position-relative d-flex align-items-center justify-content-center">
-                    <h5 class="display-3 text-uppercase text-white" style="-webkit-text-stroke: 1px #e69b69;">ATTINY</h5>
-                    <h1 class="position-absolute text-uppercase text-primary">ATTINY</h1>
+                    <h5 class="display-3 text-uppercase text-white" style="-webkit-text-stroke: 1px #e69b69;">Resultados</h5>
+                    <h1 class="position-absolute text-uppercase text-primary">Resultados</h1>
                 </div>
-              
+              <p>Para cada uno de los microcontroladores (ESP32-C6, Arduino Uno y ATtiny86), se obtuvieron tiempos de respuesta en milisegundos. Los resultados exactos pueden variar dependiendo de varios factores como el rendimiento del puerto USB y la eficiencia de los microcontroladores.</p>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabla de Velocidad ATtiny</title>
-   
+    <title>Tabla de Microcontroladores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        caption {
+            margin: 10px 0;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    </style>
 </head>
+<body>
     <table>
         <thead>
             <tr>
-                <th>Modelo</th>
-                <th>Velocidad máxima (MHz)</th>
-                <th>Flash (KB)</th>
-                <th>RAM (Bytes)</th>
-                <th>GPIO</th>
+                <th>Microcontrolador</th>
+                <th>Velocidad de Baudios</th>
+                <th>Tiempo Promedio de Respuesta (ms)</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>ATtiny85</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>Esp32-C6</td>
+                <td>2000000</td>
+                <td>0.307</td>
             </tr>
             <tr>
-                <td>ATtiny84</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>Arduino Uno</td>
+                <td>115200</td>
+                <td>0.496</td>
             </tr>
             <tr>
-                <td>ATtiny13</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>ATtiny86</td>
+                <td>115200</td>
+                <td>1.536</td>
             </tr>
         </tbody>
     </table>
-    <br>
-    <center><h3>Flash</h3></center>
-    <br>
-    <center><h3>RAM</h3></center>
-   
-<BR>
-    <div class="container-fluid py-5" id="qualification">
-        <div class="container">
-            <div class="position-relative d-flex align-items-center justify-content-center">
-                <h5 class="display-3 text-uppercase text-white" style="-webkit-text-stroke: 1px #e69b69;">ATmega328</h5>
-                <h1 class="position-absolute text-uppercase text-primary">ATmega328</h1>
-            </div>
-                <br>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tabla de Velocidad ATtiny</title>
+</body>
+<p>Estos resultados indican que, aunque todos los microcontroladores lograron realizar la tarea, el ESP32-C6 mostró la menor latencia, lo que sugiere que este microcontrolador tiene un mejor rendimiento en términos de comunicación serie con respecto a los otros dos, además es el único que puede soportar más de 115200 baudios. El Arduino Uno mostró un rendimiento intermedio, mientras que el ATtiny86, debido a sus limitaciones de hardware, mostró el mayor tiempo de respuesta.</p>
 
-</head>
-<table>
-    <thead>
-        <tr>
-            <th>Modelo</th>
-            <th>Velocidad máxima (MHz)</th>
-            <th>Flash (KB)</th>
-            <th>RAM (Bytes)</th>
-            <th>GPIO</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>ATtiny85</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>ATtiny84</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>ATtiny13</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
-<br>
-<center><h3>Flash</h3></center>
-<br>
-<center><h3>RAM</h3></center>
-
-<BR>
-    <div class="container-fluid py-5" id="qualification">
-        <div class="container">
-            <div class="position-relative d-flex align-items-center justify-content-center">
-                <h5 class="display-3 text-uppercase text-white" style="-webkit-text-stroke: 1px #e69b69;">ESP32</h5>
-                <h1 class="position-absolute text-uppercase text-primary">ESP32</h1>
-            </div>
-                <br>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tabla de Velocidad ATtiny</title>
-
-</head>
-<table>
-    <thead>
-        <tr>
-            <th>Modelo</th>
-            <th>Velocidad máxima (MHz)</th>
-            <th>Flash (KB)</th>
-            <th>RAM (Bytes)</th>
-            <th>GPIO</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>ATtiny85</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>ATtiny84</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>ATtiny13</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
-<br>
-<center><h3>Flash</h3></center>
-<br>
-<center><h3>RAM</h3></center>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f9;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #dedede;
-        }
-        tr:nth-child(even) {
-            background-color: #ffffff;
-        }
-    </style>
 </head>
     <!-- Blog End -->
     <!-- Blog End -->
@@ -423,7 +364,14 @@
                 <h5 class="display-3 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Conclusion</h5>
                 <h1 class="position-absolute text-uppercase text-primary">Conclusion</h1>
             </div>
-              <P>El ATtiny y el ATmega simulan multitarea mediante técnicas como interrupciones y multiplexación, mientras que el ESP32 soporta multitarea real gracias a su doble núcleo y FreeRTOS, ofreciendo una mayor eficiencia en la gestión de tareas concurrentes.</P>
+              <P><ol>	
+                <li>El ESP32-C6 es el microcontrolador con mejor rendimiento en términos de velocidad de respuesta en comunicaciones serie por sus capacidades de procesamiento superiores.
+                <li>El Arduino Uno, aunque es un microcontrolador más accesible, tiene un tiempo de respuesta ligeramente superior, lo que puede ser una limitación en aplicaciones de alta velocidad.
+                <li>El ATtiny86 presentó los tiempos de respuesta más altos por su arquitectura más simple y menos optimizada para tareas de comunicación rápidas.</li>
+                <br>
+                     Para aplicaciones que requieran una comunicación rápida y eficiente, el ESP32-C6 es la opción recomendada, especialmente si se busca aprovechar sus capacidades adicionales como Wi-Fi y Bluetooth. Sin embargo, para proyectos con recursos limitados y necesidades de comunicación más simples, el Arduino Uno o el ATtiny86 pueden ser opciones viables dependiendo del contexto.
+                </ol>
+                </P>
         
           
    
