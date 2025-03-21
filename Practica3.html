@@ -266,23 +266,235 @@
                         <h1 class="position-absolute text-uppercase text-primary">Procedimiento</h1>
                     </div>
                 </div>
-                <ol>
+            
                    
-            <p><li>Se programaron los tres microcontroladores con el mismo código básico que consiste en: 
+            <p>1.-Se programaron los tres microcontroladores con el mismo código básico que consiste en: 
                <ul> 
                  <li>Configurar el puerto serie a una<br> velocidad de 115200 baudios.
                 <li>Leer datos recibidos por el puerto serie.
                 <li>Responder al recibir la letra "a"<br> enviando de nuevo la misma letra.
                 </ul>
-                <li>En la computadora, se utilizó un script en Python (con la librería pySerial) para realizar las pruebas de comunicación: <br>
+                2.-En la computadora, se utilizó un script en Python (con la librería pySerial) para realizar las pruebas de comunicación: <br>
                <ul>
                 <li>Enviar la letra "a" al microcontrolador.
                 <li>Medir el tiempo transcurrido desde que se envió la letra hasta que se recibe la respuesta.
                 <li>Repetir el proceso múltiples veces<br>(100 veces por cada microcontrolador).
                </ul> 
-               <li>Los tiempos de respuesta fueron recopilados y promediados al final de cada serie de pruebas.
-                </p></ol>
-           
+               3.-Los tiempos de respuesta fueron recopilados y promediados al final de cada serie de pruebas.
+                </p>
+  
+                    <style>
+                        pre {
+                            background-color: #f4f4f4;
+                            padding: 10px;
+                            border-radius: 5px;
+                            border: 1px solid #ddd;
+                            font-family: "Courier New", Courier, monospace;
+                            overflow-x: auto;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>Arduino IDE y ESP32-C6</h1>
+                    <H3>Códigos</H3>
+                 <center> <pre>#define SERIAL_BAUD 115200
+void setup() {
+Serial.begin(SERIAL_BAUD);
+while (!Serial) {
+; //Esperar a que el puerto serie esté disponible
+}
+ }
+void loop() {
+ if (Serial.available()) {
+char received = Serial.read();//Leer el dato recibido
+  if (received == 'a') {
+   Serial.write('a');  // Responder con "a"
+     }
+    }
+ }
+</pre>
+<h1>ESP32-C6</h1>
+<H3>Codigo en Visual studio code</H3>
+<pre>
+import serial
+import time
+
+# Configurar el puerto serie
+SERIAL_PORT = "COM4"  
+BAUD_RATE = 115200
+NUM_TESTS = 100  # Número de veces que se enviará "a"
+
+# Abrir conexión serie
+ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
+time.sleep(2)  # Esperar a que el puerto se estabilice
+
+# Lista para almacenar tiempos de respuesta
+response_times = []
+
+try:
+for i in range(NUM_TESTS):
+    start_time = time.time()  # Tomar tiempo antes de enviar
+    ser.write(b'a')  # Enviar la letra "a"
+    
+    response = ser.read(1)  # Leer respuesta
+    
+    if response == b'a':  # Verificar si la respuesta es correcta
+        round_trip_time = (time.time() - start_time) * 1000  # Convertir a ms
+        response_times.append(round_trip_time)
+        print(f"Prueba {i+1}: {round_trip_time:.3f} ms")
+    else:
+        print(f"Prueba {i+1}: Error, no se recibió respuesta")
+
+    time.sleep(0.01)  # Pequeña pausa para estabilidad
+
+# Calcular el promedio de tiempos
+if response_times:
+    avg_time = sum(response_times) / len(response_times)
+    print(f"\nTiempo promedio de respuesta: {avg_time:.3f} ms")
+else:
+    print("\nNo se obtuvieron respuestas válidas.")
+
+except KeyboardInterrupt:
+print("\nInterrupción manual. Cerrando conexión...")
+
+finally:
+ser.close()
+</pre>
+<h1>Arduino uno</h1>
+<H3>Codigo en Visual studio</H3>
+<pre>
+import serial
+import time
+
+# Configuración del puerto serie
+SERIAL_PORT = "COM10"  # Asegúrate de que coincide con tu Arduino
+BAUD_RATE = 115200  # Máximo estable en Arduino Uno
+NUM_TESTS = 100  # Número de pruebas
+
+# Abrir conexión serie
+ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
+time.sleep(2)  # Esperar estabilización
+
+response_times = []
+
+try:
+for i in range(NUM_TESTS):
+    start_time = time.time()
+    ser.write(b'a')  # Enviar "a"
+
+    response = ser.read(1)  # Leer respuesta
+
+    if response == b'a':  # Verificar respuesta
+        round_trip_time = (time.time() - start_time) * 1000
+        response_times.append(round_trip_time)
+        print(f"Prueba {i+1}: {round_trip_time:.3f} ms")
+    else:
+        print(f"Prueba {i+1}: Error, no se recibió respuesta")
+
+    time.sleep(0.01)  # Pequeña pausa
+
+if response_times:
+    avg_time = sum(response_times) / len(response_times)
+    print(f"\nTiempo promedio de respuesta: {avg_time:.3f} ms")
+else:
+    print("\nNo se obtuvieron respuestas válidas.")
+
+except KeyboardInterrupt:
+print("\nInterrupción manual. Cerrando conexión...")
+
+finally:
+ser.close()
+</pre>
+<h1>Arduino uno</h1>
+<h3>Código Arduino uno ide</h3>
+    <pre>
+#define SERIAL_BAUD 115200
+
+void setup() {
+    Serial.begin(SERIAL_BAUD);
+}
+
+void loop() {
+    if (Serial.available() > 0) {
+        char received = Serial.read();
+        if (received == 'a') {
+            Serial.write('a');  // Responder con "a"
+        }
+    }
+}
+    </pre>
+    <h1>Attiny</h1>
+    <h3>Código Arduino uno ide</h3>
+
+    <pre>
+#include &lt;SoftwareSerial.h&gt;
+
+#define SERIAL_BAUD 9600
+#define RX_PIN 3
+#define TX_PIN 4
+
+SoftwareSerial mySerial(RX_PIN, TX_PIN);
+
+void setup() {
+    mySerial.begin(SERIAL_BAUD);
+}
+
+void loop() {
+    if (mySerial.available() > 0) {
+        char received = mySerial.read();
+        if (received == 'a') {
+            mySerial.write('a');
+        }
+    }
+}
+    </pre>
+    <h1>Attiny</h1>
+    <H3>Codigo en Visual studio</H3>
+
+    <pre>
+import serial
+import time
+
+SERIAL_PORT = "COM4"
+BAUD_RATE = 9600
+NUM_TESTS = 100
+
+ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
+time.sleep(2)
+
+response_times = []
+
+try:
+    for i in range(NUM_TESTS):
+        start_time = time.time()
+        ser.write(b'a')
+
+        response = ser.read(1)
+
+        if response == b'a':
+            round_trip_time = (time.time() - start_time) * 1000
+            response_times.append(round_trip_time)
+            print(f"Prueba {i+1}: {round_trip_time:.3f} ms")
+        else:
+            print(f"Prueba {i+1}: Error, no se recibió respuesta")
+
+        time.sleep(0.05)
+
+    if response_times:
+        avg_time = sum(response_times) / len(response_times)
+        print(f"\nTiempo promedio de respuesta: {avg_time:.3f} ms")
+    else:
+        print("\nNo se obtuvieron respuestas válidas.")
+
+except KeyboardInterrupt:
+    print("\nInterrupción manual. Cerrando conexión...")
+
+finally:
+    ser.close()
+    </pre>
+
+
+                </center>  
          <div class="container-fluid py-5" id="qualification">
             <div class="container">
                 <div class="position-relative d-flex align-items-center justify-content-center">
@@ -347,13 +559,13 @@
             </tr>
             <tr>
                 <td>ATtiny86</td>
-                <td>115200</td>
+                <td>9600</td>
                 <td>1.536</td>
             </tr>
         </tbody>
     </table>
 </body>
-<p>Estos resultados indican que, aunque todos los microcontroladores lograron realizar la tarea, el ESP32-C6 mostró la menor latencia, lo que sugiere que este microcontrolador tiene un mejor rendimiento en términos de comunicación serie con respecto a los otros dos, además es el único que puede soportar más de 115200 baudios. El Arduino Uno mostró un rendimiento intermedio, mientras que el ATtiny86, debido a sus limitaciones de hardware, mostró el mayor tiempo de respuesta.</p>
+<p>Estos resultados indican que, aunque todos los microcontroladores lograron realizar la tarea, el ESP32-C6 mostró la menor latencia, lo que sugiere que este microcontrolador tiene un mejor rendimiento en términos de comunicación serie con respecto a los otros dos, además es el único que puede soportar más de 115200 baudios. El Arduino Uno mostró un rendimiento intermedio, mientras que el ATtiny86 con 9600 baudios, debido a sus limitaciones de hardware, mostró el mayor tiempo de respuesta.</p>
 
 </head>
     <!-- Blog End -->
